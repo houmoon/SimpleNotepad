@@ -18,15 +18,22 @@ namespace SimpleNotepad
 	[Guid("6c7eb564-5582-4307-9838-9ede38daa61f")]
 	public class MemoWindow : ToolWindowPane
 	{
+		public string FilePath
+		{
+			set => filepath = value;
+		}
+		private string filepath;
+
+		
 
 		public void LoadText()
 		{
-			((MemoWindowControl)Content)?.LoadText();
+			((MemoWindowControl)Content)?.LoadText(filepath);
 		}
 
 		public void SaveText()
 		{
-			((MemoWindowControl)Content)?.SaveText();
+			((MemoWindowControl)Content)?.SaveText(filepath);
 		}
 
 		/// <summary>

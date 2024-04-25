@@ -17,7 +17,7 @@ namespace SimpleNotepad
 		public const string PackageGuidString = "e8f0414c-c2f9-4d6c-bb53-28544c907558";
 
 		private uint _solutionEventsCookie;
-		private IVsSolution _solution;
+		public IVsSolution Solution;
 
 		#region Package Members
 
@@ -27,14 +27,17 @@ namespace SimpleNotepad
 		    await MemoWindowCommand.InitializeAsync(this);
 
 			//솔루션 이벤트 등록
-		    _solution = await GetServiceAsync(typeof(SVsSolution)) as IVsSolution;
-		    if (_solution != null)
+			Solution = await GetServiceAsync(typeof(SVsSolution)) as IVsSolution;
+		    if (Solution != null)
 		    {
 			    var solutionEventsHandler = new SolutionEventsHandler();
-			    _solution.AdviseSolutionEvents(solutionEventsHandler, out _solutionEventsCookie);
-		    }
+			    Solution.AdviseSolutionEvents(solutionEventsHandler, out _solutionEventsCookie);
+			}
+		    
 
 		}
+
+
 
 		#endregion
 
@@ -43,10 +46,10 @@ namespace SimpleNotepad
 		{
 			try
 			{
-				if (_solution != null && _solutionEventsCookie != 0)
+				if (Solution != null && _solutionEventsCookie != 0)
 				{
 					// 솔루션 이벤트 핸들러 등록 해제
-					_solution.UnadviseSolutionEvents(_solutionEventsCookie);
+					Solution.UnadviseSolutionEvents(_solutionEventsCookie);
 				}
 			}
 			finally

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,9 +21,11 @@ namespace SimpleNotepad
 
 		}
 
-		public void LoadText()
+		private string _solutionDirectory = String.Empty;
+
+		public void LoadText(string solutionDirectory)
 		{
-			string solutionDirectory = Path.GetDirectoryName(this.GetType().Assembly.Location);
+			_solutionDirectory = solutionDirectory;
 			string filePath = Path.Combine(solutionDirectory, "memo.txt");
 
 			if (File.Exists(filePath))
@@ -46,10 +49,13 @@ namespace SimpleNotepad
 			}
 		}
 
-		public void SaveText()
+		public void SaveText(string solutionDirectory)
 		{
-			string solutionDirectory = Path.GetDirectoryName(this.GetType().Assembly.Location);
+			_solutionDirectory = solutionDirectory;
+
+			
 			string filePath = Path.Combine(solutionDirectory, "memo.txt");
+
 			File.WriteAllText(filePath, MemoTextBox.Text);
 		}
 
@@ -62,7 +68,7 @@ namespace SimpleNotepad
 		[SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Default event handler naming pattern")]
 		private void SaveButton_Callback(object sender, RoutedEventArgs e)
 		{
-			SaveText();
+			SaveText(_solutionDirectory);
 		}
 
 		private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
