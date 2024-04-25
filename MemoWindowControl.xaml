@@ -1,0 +1,38 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vsshell="clr-namespace:Microsoft.VisualStudio.Shell;assembly=Microsoft.VisualStudio.Shell.15.0"
+             xmlns:platformUi="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.15.0"
+             xmlns:PlatformUI="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Utilities" x:Class="SimpleNotepad.MemoWindowControl"
+             Background="{DynamicResource {x:Static vsshell:VsBrushes.WindowKey}}"
+             Foreground="{DynamicResource {x:Static vsshell:VsBrushes.WindowTextKey}}"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="MyToolWindow">
+	<UserControl.Resources>
+		<PlatformUI:AddingConverter x:Key="AddingConverter"/>
+	</UserControl.Resources>
+	<Grid UseLayoutRounding="True">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+		</Grid.RowDefinitions>
+
+		<DockPanel ClipToBounds="True" DockPanel.Dock="Top">
+			<ToolBarTray x:Name="toolBarTray" Height="Auto" Background="{x:Null}" Margin="1,1,1,1">
+				<ToolBar x:Name="toolBar" Band="0"  BandIndex="1" Background="{x:Null}" ToolBarTray.IsLocked="True" IsOverflowOpen="False" ToolBar.OverflowMode="Never" HorizontalContentAlignment="Stretch" VerticalAlignment="Center" Width="{Binding ActualWidth, ConverterParameter=30, Converter={StaticResource AddingConverter}, ElementName=toolBarTray, Mode=OneWay}">
+					<Button Click="SaveButton_Callback" Height="Auto" Padding="2,2,2,2">
+						<Image Source="Resources/save.png" Height="16"/>
+					</Button>
+					<Separator/>
+				</ToolBar>
+			</ToolBarTray>
+		</DockPanel>
+
+
+		<TextBox Name="MemoTextBox" TextChanged="TextBox_TextChanged" Grid.Row="2" TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" Style="{DynamicResource {x:Static vsshell:VsResourceKeys.ThemedDialogTextBoxStyleKey}}" Background="{x:Null}" Padding="5,5,5,5"/>
+	</Grid>
+</UserControl>
